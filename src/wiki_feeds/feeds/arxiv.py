@@ -164,8 +164,8 @@ def backfill(
     keyword_query = "+OR+".join(
         f'ti:"{kw}"+OR+abs:"{kw}"' for kw in keywords[:5]  # limit query length
     )
-    start_str = since.strftime("%Y%m%d")
-    end_str = date.today().strftime("%Y%m%d")
+    start_str = since.strftime("%Y%m%d0000")
+    end_str = date.today().strftime("%Y%m%d2359")
 
     offset = 0
     batch = 50
@@ -206,6 +206,10 @@ def backfill(
         for entry in entries:
             entry_url = entry["id"]
             if state.seen(entry_url):
+                continue
+            pub_date = date.fromisoformat(entry["published"][:10])
+            if pub_date < since:
+                state.mark(entry_url)
                 continue
             if not _matches_keywords(entry["title"] + " " + entry["abstract"], keywords):
                 state.mark(entry_url)

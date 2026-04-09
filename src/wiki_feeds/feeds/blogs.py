@@ -169,6 +169,10 @@ def backfill(
             except Exception:
                 pass
 
+        if not urls_to_process:
+            print(f"    No sitemap and no RSS entries found after {since} — skipping.")
+            continue
+
         for url, date_str in urls_to_process:
             if state.seen(url):
                 continue
@@ -232,7 +236,7 @@ def _discover_sitemap_urls(base: str, since: date, client: httpx.Client) -> list
     def try_get(url: str) -> str | None:
         try:
             r = client.get(url, timeout=15, follow_redirects=True)
-            if r.status_code == 200 and "xml" in r.headers.get("content-type", ""):
+            if r.status_code == 200:
                 return r.text
         except Exception:
             pass
