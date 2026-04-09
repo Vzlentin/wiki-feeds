@@ -30,7 +30,7 @@ def _arxiv_id(entry_id: str) -> str:
 
 def _matches_keywords(text: str, keywords: list[str]) -> bool:
     text_lower = text.lower()
-    return any(kw in text_lower for kw in keywords)
+    return all(kw in text_lower for kw in keywords)
 
 
 def _parse_feed_xml(xml_text: str) -> list[dict]:
@@ -206,6 +206,9 @@ def backfill(
         for entry in entries:
             entry_url = entry["id"]
             if state.seen(entry_url):
+                continue
+            if not _matches_keywords(entry["title"] + " " + entry["abstract"], keywords):
+                state.mark(entry_url)
                 continue
 
             arxiv_id = entry["arxiv_id"]
