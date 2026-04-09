@@ -1,0 +1,24 @@
+[project]
+name = "wiki-feeds"
+version = "0.1.0"
+description = "Automated RSS/arXiv feed fetcher for the LLM wiki"
+readme = "README.md"
+authors = [
+    { name = "Valentin Dusserre", email = "valentindusserre@gmail.com" }
+]
+requires-python = ">=3.14"
+dependencies = [
+    "click>=8.3.2",
+    "feedparser>=6.0.12",
+    "httpx>=0.28.1",
+    "markdownify>=1.2.2",
+    "pyyaml>=6.0.3",
+    "readability-lxml>=0.8.4.1",
+]
+
+[project.scripts]
+wiki-feeds = "wiki_feeds.cli:main"
+
+[build-system]
+requires = ["uv_build>=0.11.3,<0.12.0"]
+build-backend = "uv_build"

@@ -1,0 +1,30 @@
+vault_path: /home/val/automation/obsidian-vault/vault/Val   # VPS working copy
+
+keywords:
+  - conformal
+  - prediction interval
+  - coverage guarantee
+  - uncertainty quantification
+  - forecast reconciliation
+  - demand planning
+  - safety stock
+  - quantile regression
+  - time series forecasting
+  - conformal prediction
+  - prediction set
+
+feeds:
+  arxiv:
+    - url: "https://export.arxiv.org/api/query?search_query=cat:stat.ML&sortBy=lastUpdatedDate&max_results=50"
+    - url: "https://export.arxiv.org/api/query?search_query=cat:cs.LG&sortBy=lastUpdatedDate&max_results=50"
+    - url: "https://export.arxiv.org/api/query?search_query=cat:stat.AP&sortBy=lastUpdatedDate&max_results=30"
+
+  blogs:
+    - url: "https://robjhyndman.com/hyndsight/index.xml"
+      name: "Rob Hyndman"
+    - url: "https://supchains.com/feed/"
+      name: "Nicolas Vandeput"
+    - url: "https://blog.nixtla.io/rss/"
+      name: "Nixtla"
+    - url: "https://angelopoulos.ai/feed.xml"
+      name: "Anastasios Angelopoulos"
