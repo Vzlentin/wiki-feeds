@@ -7,7 +7,7 @@ import click
 import httpx
 
 from wiki_feeds import config as cfg_module
-from wiki_feeds import git, inbox
+from wiki_feeds import inbox
 from wiki_feeds.feeds import arxiv, blogs
 from wiki_feeds.state import State
 
@@ -49,7 +49,6 @@ def sync(ctx: click.Context) -> None:
 
     if inbox_items:
         inbox.append(vault, inbox_items)
-        git.commit_and_push(vault, f"wiki-feeds: add {len(inbox_items)} new source(s)")
         print(f"\nDone. {len(inbox_items)} new item(s) added to _raw/_inbox.md")
     else:
         print("\nDone. No new matching items found.")
@@ -85,7 +84,6 @@ def backfill(ctx: click.Context, since: date, arxiv_only: bool, blogs_only: bool
 
     if inbox_items:
         inbox.append(vault, inbox_items)
-        git.commit_and_push(vault, f"wiki-feeds: backfill {len(inbox_items)} source(s) since {since_date}")
         print(f"\nBackfill done. {len(inbox_items)} item(s) added.")
     else:
         print("\nBackfill done. No new matching items found.")
