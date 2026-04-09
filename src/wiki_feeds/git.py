@@ -22,7 +22,7 @@ def commit_and_push(vault_path: Path, message: str) -> None:
     run(["git", "commit", "-m", message])
 
     try:
-        subprocess.run(["git", "push"], cwd=vault_path, check=True, text=True)
+        subprocess.run(["git", "push", "--set-upstream", "origin", "HEAD"], cwd=vault_path, check=True, text=True)
     except subprocess.CalledProcessError as e:
         print(f"  [git] Push failed (exit {e.returncode}). Files are committed locally.")
         raise
