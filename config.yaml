@@ -1,4 +1,4 @@
-vault_path: /home/val/automation/obsidian-vault/vault/Val   # VPS working copy
+vault_path: /home/debian/automation/obsidian-vault/vault/Val   # VPS working copy
 
 keywords:
   arxiv:
