@@ -1,17 +1,9 @@
 vault_path: /home/val/automation/obsidian-vault/vault/Val   # VPS working copy
 
 keywords:
-  - conformal
-  - prediction interval
-  - coverage guarantee
-  - uncertainty quantification
-  - forecast reconciliation
-  - demand planning
-  - safety stock
-  - quantile regression
-  - time series forecasting
-  - conformal prediction
-  - prediction set
+  arxiv:
+    - conformal prediction
+    - time series forecasting
 
 feeds:
   arxiv:

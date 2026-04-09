@@ -40,10 +40,10 @@ def sync(ctx: click.Context) -> None:
 
     with httpx.Client(headers={"User-Agent": "wiki-feeds/1.0 (personal research tool)"}) as client:
         print("Fetching arXiv feeds...")
-        inbox_items += arxiv.sync(conf.feeds.arxiv, conf.keywords, vault, state, client)
+        inbox_items += arxiv.sync(conf.feeds.arxiv, conf.keywords.arxiv, vault, state, client)
 
         print("Fetching blog feeds...")
-        inbox_items += blogs.sync(conf.feeds.blogs, conf.keywords, vault, state, client)
+        inbox_items += blogs.sync(conf.feeds.blogs, conf.keywords.blogs, vault, state, client)
 
     state.save()
 
@@ -75,11 +75,11 @@ def backfill(ctx: click.Context, since: date, arxiv_only: bool, blogs_only: bool
     with httpx.Client(headers={"User-Agent": "wiki-feeds/1.0 (personal research tool)"}) as client:
         if not blogs_only:
             print(f"Backfilling arXiv since {since_date}...")
-            inbox_items += arxiv.backfill(conf.keywords, vault, state, client, since_date)
+            inbox_items += arxiv.backfill(conf.keywords.arxiv, vault, state, client, since_date)
 
         if not arxiv_only:
             print(f"Backfilling blogs since {since_date}...")
-            inbox_items += blogs.backfill(conf.feeds.blogs, conf.keywords, vault, state, client, since_date)
+            inbox_items += blogs.backfill(conf.feeds.blogs, conf.keywords.blogs, vault, state, client, since_date)
 
     state.save()
 

@@ -82,11 +82,26 @@ def sync(
     inbox_items = []
 
     for feed in feeds:
-        try:
-            resp = client.get(feed.url, timeout=30, follow_redirects=True)
-            resp.raise_for_status()
-        except Exception as e:
-            print(f"  [arXiv] Failed to fetch {feed.url}: {e}")
+        resp = None
+        for attempt in range(4):
+            try:
+                resp = client.get(feed.url, timeout=30, follow_redirects=True)
+                resp.raise_for_status()
+                break
+            except httpx.HTTPStatusError as e:
+                if e.response.status_code == 429 and attempt < 3:
+                    wait = 10 * (3 ** attempt)
+                    print(f"  [arXiv] Rate limited, retrying in {wait}s...")
+                    time.sleep(wait)
+                else:
+                    print(f"  [arXiv] Failed to fetch {feed.url}: {e}")
+                    resp = None
+                    break
+            except Exception as e:
+                print(f"  [arXiv] Failed to fetch {feed.url}: {e}")
+                resp = None
+                break
+        if resp is None:
             continue
 
         entries = _parse_feed_xml(resp.text)
@@ -162,14 +177,29 @@ def backfill(
             max_results=batch,
             offset=offset,
         )
-        try:
-            resp = client.get(url, timeout=30, follow_redirects=True)
-            resp.raise_for_status()
-        except Exception as e:
-            print(f"  [arXiv backfill] Request failed: {e}")
+        page_resp = None
+        for attempt in range(4):
+            try:
+                page_resp = client.get(url, timeout=30, follow_redirects=True)
+                page_resp.raise_for_status()
+                break
+            except httpx.HTTPStatusError as e:
+                if e.response.status_code == 429 and attempt < 3:
+                    wait = 10 * (3 ** attempt)
+                    print(f"  [arXiv backfill] Rate limited, retrying in {wait}s...")
+                    time.sleep(wait)
+                else:
+                    print(f"  [arXiv backfill] Request failed: {e}")
+                    page_resp = None
+                    break
+            except Exception as e:
+                print(f"  [arXiv backfill] Request failed: {e}")
+                page_resp = None
+                break
+        if page_resp is None:
             break
 
-        entries = _parse_feed_xml(resp.text)
+        entries = _parse_feed_xml(page_resp.text)
         if not entries:
             break
 

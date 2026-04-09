@@ -84,7 +84,7 @@ def sync(
             title = entry.get("title", "Untitled")
             content = entry.get("summary", "") + " " + entry.get("content", [{}])[0].get("value", "") if entry.get("content") else entry.get("summary", "")
 
-            if not _matches_keywords(title + " " + content, keywords):
+            if keywords and not _matches_keywords(title + " " + content, keywords):
                 state.mark(url)
                 continue
 
@@ -185,7 +185,7 @@ def backfill(
                 state.mark(url)
                 continue
 
-            if not _matches_keywords(title + " " + html, keywords):
+            if keywords and not _matches_keywords(title + " " + html, keywords):
                 state.mark(url)
                 time.sleep(0.5)
                 continue
